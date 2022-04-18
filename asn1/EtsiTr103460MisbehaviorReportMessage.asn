@@ -1,0 +1,130 @@
+EtsiTr103460MisbehaviorReportMessage { 
+itu-t(0) identified-organization(4) etsi(0) itsDomain(5) wg5(5) en (302637) tr(103460) ts (103097) mrm(0) version(1)
+}
+
+DEFINITIONS AUTOMATIC TAGS ::=
+
+BEGIN
+
+IMPORTS
+TimestampIts, StationType, ReferencePosition, Heading, Speed, DriveDirection, VehicleLength,
+VehicleWidth, Curvature, LongitudinalAcceleration, CurvatureCalculationMode, YawRate
+FROM
+ITS-Container {
+itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) ts (102894) cdd (2) version (2)
+}
+
+PerceivedObjectContainer, SensorInformationContainer
+FROM
+CPM-PDU-Descriptions {
+    itu-t (0) identified-organization (4) etsi (0) itsDomain (5) wg1 (1) tr (103562) cpm (1) version (1) 
+}
+
+EtsiTs103097Data, EtsiTs103097Certificate
+FROM
+EtsiTs103097Module {
+    itu-t(0) identified-organization(4) etsi(0) itsDomain(5) wg5(5) ts(103097) securedMessageV1(0)
+};
+
+
+-- The root data frame for report messages
+Version::=INTEGER(0..255) -- this equals Uint8
+
+MisbehaviorReport::= SEQUENCE {
+    version Version, -- use value 1
+    reportMetadataContainer ReportMetadataContainer,
+    reportContainer ReportContainer
+}
+
+ReportMetadataContainer::= SEQUENCE {
+    reportID IA5String,
+    generationTime TimestampIts,
+    relatedReportContainer RelatedReportContainer OPTIONAL
+}
+
+RelatedReportContainer::= SEQUENCE { 
+    relatedReportID IA5String,
+    omitedReportsNumber OmitedReportsNumber 
+}   
+
+ReportContainer::= SEQUENCE { 
+    reportedMessageContainer ReportedMessageContainer,
+    misbehaviorTypeContainer MisbehaviorTypeContainer, 
+    evidenceContainer EvidenceContainer OPTIONAL 
+}
+
+ReportedMessageContainer::= CHOICE { 
+    certificateIncludedContainer CertificateIncludedContainer, 
+    certificateAddedContainer CertificateAddedContainer 
+}
+
+CertificateIncludedContainer::= SEQUENCE{ reportedMessage EtsiTs103097Data }
+
+CertificateAddedContainer::= SEQUENCE{ 
+    reportedMessage EtsiTs103097Data, 
+    reportedCertificate EtsiTs103097Certificate 
+}
+
+MisbehaviorTypeContainer::= CHOICE { 
+    securityDetection SecurityDetection, 
+    semanticDetection SemanticDetection, 
+    ... 
+}
+
+SecurityDetection::= SEQUENCE { 
+    securityDetectionErrorCode OCTET STRING (SIZE (0..4)), 
+    ... 
+}
+
+SemanticDetection::= CHOICE { 
+    semanticDetectionReferenceCAM DetectionReferenceCAM, 
+    /* 
+    semanticDetectionReferenceDENM DetectionReferenceDENM, 
+    semanticDetectionReferenceCPM DetectionReferenceCPM, 
+    semanticDetectionReferenceSPAT DetectionReferenceSPAT, 
+    semanticDetectionReferenceMAP DetectionReferenceMAP, 
+    */ 
+    ... 
+}
+
+DetectionReferenceCAM::= SEQUENCE{ 
+    detectionLevelCAM DetectionLevel, 
+    semanticDetectionErrorCodeCAM OCTET STRING (SIZE (0..2)) 
+}
+
+EvidenceContainer::= SEQUENCE { 
+    reportedMessageContainer MessageEvidenceContainer OPTIONAL, 
+    neighbourMessageContainer MessageEvidenceContainer OPTIONAL, 
+    senderInfoContainer SenderInfoContainer OPTIONAL, 
+    senderSensorContainer SenderSensorContainer OPTIONAL 
+}
+
+MessageEvidenceContainer::= SEQUENCE OF EtsiTs103097Data
+
+SenderInfoContainer::= SEQUENCE { 
+    stationType StationType, 
+    referencePosition ReferencePosition, 
+    heading Heading, speed Speed, 
+    driveDirection DriveDirection, 
+    vehicleLength VehicleLength,
+    vehicleWidth VehicleWidth, 
+    longitudinalAcceleration LongitudinalAcceleration, 
+    curvature Curvature, 
+    yawRate YawRate, 
+    ... 
+}
+
+SenderSensorContainer::= SEQUENCE OF SenderSensorChoice
+
+SenderSensorChoice::= CHOICE{ 
+    sensorInformationContainer SensorInformationContainer, 
+    perceivedObjectContainer PerceivedObjectContainer 
+}
+
+DetectionLevel ::= INTEGER { level(1) } (1..4) 
+OmitedReportsNumber ::= INTEGER { oneReport(1) } (0..1024)
+
+
+
+
+END
