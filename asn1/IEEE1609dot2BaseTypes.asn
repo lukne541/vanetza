@@ -97,8 +97,8 @@ SequenceOfRectangularRegion ::= SEQUENCE OF RectangularRegion
 PolygonalRegion ::= SEQUENCE SIZE(3..MAX) OF TwoDLocation
 
 TwoDLocation ::= SEQUENCE {
-    latitude      Latitude,
-    longitude     Longitude
+    latitude      Latitude1609,
+    longitude     Longitude1609
 }
 
 IdentifiedRegion ::= CHOICE {
@@ -130,14 +130,14 @@ RegionAndSubregions ::= SEQUENCE {
 SequenceOfRegionAndSubregions ::= SEQUENCE OF RegionAndSubregions
 
 ThreeDLocation ::= SEQUENCE {
-    latitude        Latitude,
-    longitude       Longitude,
-    elevation       Elevation
+    latitude        Latitude1609,
+    longitude       Longitude1609,
+    elevation       Elevation1609
 }
 
-Latitude ::= NinetyDegreeInt
-Longitude ::= OneEightyDegreeInt
-Elevation ::= ElevInt
+Latitude1609 ::= NinetyDegreeInt
+Longitude1609 ::= OneEightyDegreeInt
+Elevation1609 ::= ElevInt
 
 NinetyDegreeInt ::= INTEGER {
     min     (-900000000),

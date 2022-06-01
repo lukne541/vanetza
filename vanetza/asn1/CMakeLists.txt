@@ -19,6 +19,8 @@ if(VANETZA_ASN1_WITH_ASN1C)
         ${PROJECT_SOURCE_DIR}/asn1/TS102894-2v131-CDD.asn
         ${PROJECT_SOURCE_DIR}/asn1/EN302637-2v141-CAM.asn
         ${PROJECT_SOURCE_DIR}/asn1/EN302637-3v131-DENM.asn
+        ${PROJECT_SOURCE_DIR}/asn1/EtsiTr103460MisbehaviorReportMessage.asn
+
     )
 
     set(_its_asn1_files_depending_on_iso
@@ -70,12 +72,13 @@ if(VANETZA_ASN1_WITH_ASN1C)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} VERBATIM)
 
     add_custom_command(OUTPUT ${_its_asn1_dir}
-        DEPENDS ${_its_asn1_files}
+        DEPENDS ${_sec_asn1_files}
         COMMAND ${CMAKE_COMMAND} -E make_directory ${_its_asn1_dir}
-        COMMAND ${ASN1C_EXECUTABLE} ${_asn1c_flags} -R -D ${_its_asn1_dir} ${_its_asn1_files} test.asn
+        COMMAND ${ASN1C_EXECUTABLE} ${_asn1c_flags} -R -D ${_its_asn1_dir} ${_its_asn1_files} ${_sec_asn1_files} test.asn
         COMMENT "Generating code from ITS application ASN.1 modules (CDD, CA, DEN)" VERBATIM
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     add_custom_command(OUTPUT "${_its_asn1_source_file}"
+        DEPENDS ${_sec_asn1_files}
         DEPENDS ${_its_asn1_dir}
         COMMAND ${CMAKE_COMMAND} -DASN1C_OUTPUT_DIR=its -DASN1C_SOURCE_FILE=${_its_asn1_source_file}
             -P collect_asn1c_sources.cmake
