@@ -1,5 +1,5 @@
 MisbehaviorReportNZKP {
-    itu-t(0) identified-organization(4) etsi(0) itsDomain(5) wg5(5) en (302637) tr(103460) ts (103097) mrm(0) version(1)
+    itu-t(0) identified-organization(4) nzkpmr(0) etsi(0) itsDomain(5) wg5(5) en (302637) tr(103460) ts (103097) version(1)
 }
 
 DEFINITIONS AUTOMATIC TAGS ::=
@@ -7,6 +7,12 @@ DEFINITIONS AUTOMATIC TAGS ::=
 BEGIN
 
 IMPORTS
+Version, StationID, MisbehaviorReport
+FROM
+EtsiTr103460MisbehaviorReportMessage { 
+itu-t(0) identified-organization(4) etsi(0) itsDomain(5) wg5(5) en (302637) tr(103460) ts (103097) mrm(0) version(1)
+}
+
 EtsiTr103460MisbehaviorReportMessage, AuthorizationTicket
 FROM
 ITS-Container {
@@ -14,9 +20,7 @@ itu-t (0) identified-organization (4) etsi (0) itsDomain (5)
 wg1 (1) ts (102894) cdd (2) version (2)
 };
 
-Version::=INTEGER(0..255) 
 MessageID ::= INTEGER(0..4294967295)
-StationID ::= INTEGER(0..4294967295)
 
 MisbehaviorReportNZKP::= SEQUENCE {
     header Header,
@@ -30,8 +34,8 @@ Header ::= SEQUENCE {
 }
 
 Payload ::= SEQUENCE {
-    misbehavoirReport EtsiTr103460MisbehaviorReportMessage,
-    authorizationTicket AuthorizationTicket,
+    misbehaviorReport MisbehaviorReport,
+    --authorizationTicket AuthorizationTicket,
     nkzp NZKP
 }
 
