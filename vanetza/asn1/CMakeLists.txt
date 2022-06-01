@@ -20,6 +20,7 @@ if(VANETZA_ASN1_WITH_ASN1C)
         ${PROJECT_SOURCE_DIR}/asn1/EN302637-2v141-CAM.asn
         ${PROJECT_SOURCE_DIR}/asn1/EN302637-3v131-DENM.asn
         ${PROJECT_SOURCE_DIR}/asn1/EtsiTr103460MisbehaviorReportMessage.asn
+        ${PROJECT_SOURCE_DIR}/asn1/NZKPMisbehaviorReportMessage.asn
     )
 
     set(_its_asn1_files_depending_on_iso
