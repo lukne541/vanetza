@@ -1,0 +1,9 @@
+MY-MODULE DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Message ::= SEQUENCE {
+    msgId INTEGER,
+    szDescription OCTET STRING (SIZE(10)),
+    isReady BOOLEAN
+}
+
+END
