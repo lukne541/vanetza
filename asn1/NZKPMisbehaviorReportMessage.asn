@@ -1,3 +1,7 @@
+MisbehaviorReportNZKP {
+    itu-t(0) identified-organization(4) etsi(0) itsDomain(5) wg5(5) en (302637) tr(103460) ts (103097) mrm(0) version(1)
+}
+
 DEFINITIONS AUTOMATIC TAGS ::=
 
 BEGIN
@@ -11,6 +15,8 @@ wg1 (1) ts (102894) cdd (2) version (2)
 };
 
 Version::=INTEGER(0..255) 
+MessageID ::= INTEGER(0..4294967295)
+StationID ::= INTEGER(0..4294967295)
 
 MisbehaviorReportNZKP::= SEQUENCE {
     header Header,
@@ -23,22 +29,19 @@ Header ::= SEQUENCE {
     stationID StationID
 }
 
-MessageID :== INTEGER(0..4294967295)
-StationID :== INTEGER(0..4294967295)
-
 Payload ::= SEQUENCE {
     misbehavoirReport EtsiTr103460MisbehaviorReportMessage,
     authorizationTicket AuthorizationTicket,
-    NZKP NZKP
+    nkzp NZKP
 }
 
-NZKP :== SEQUENCE {
+NZKP ::= SEQUENCE {
     committedValues CommittedValues,
     proof BIT STRING
 }
 
-CommittedValues :== SET OF {
-    committedValue CommittedValue
-}
+CommittedValues ::= SET OF CommittedValue
 
-CommittedValue :== BIT STRING
+CommittedValue ::= BIT STRING
+
+END
