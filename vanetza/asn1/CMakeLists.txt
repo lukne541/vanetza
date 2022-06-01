@@ -19,30 +19,15 @@ if(VANETZA_ASN1_WITH_ASN1C)
         ${PROJECT_SOURCE_DIR}/asn1/TS102894-2v131-CDD.asn
         ${PROJECT_SOURCE_DIR}/asn1/EN302637-2v141-CAM.asn
         ${PROJECT_SOURCE_DIR}/asn1/EN302637-3v131-DENM.asn
+<<<<<<< HEAD
         ${PROJECT_SOURCE_DIR}/asn1/EtsiTr103460MisbehaviorReportMessage.asn
 
+=======
+        ${PROJECT_SOURCE_DIR}/asn1/ISO_TS_19091_CPM.asn
+        ${PROJECT_SOURCE_DIR}/asn1/TR103562v211.asn
+        ${PROJECT_SOURCE_DIR}/asn1/EtsiTr103460MisbehaviorReportMessage.asn
+>>>>>>> 68a12035ff55a34755f130b973ab0f947d6b9e67
     )
-
-    set(_its_asn1_files_depending_on_iso
-        ${PROJECT_SOURCE_DIR}/asn1/TR103562v211-CPM.asn
-        ${PROJECT_SOURCE_DIR}/asn1/TS103301v211-MAPEM.asn
-        ${PROJECT_SOURCE_DIR}/asn1/TS103301v211-RTCMEM.asn
-        ${PROJECT_SOURCE_DIR}/asn1/TS103301v211-SPATEM.asn
-    )
-
-    option(VANETZA_ASN1_WITH_ISO "Fetch ISO ASN.1 files for a more complete ITS message set" OFF)
-    if(VANETZA_ASN1_WITH_ISO)
-        set(_iso_asn1_files ISO14816.asn ISO19091.asn ISO24534-3.asn)
-        list(TRANSFORM _iso_asn1_files PREPEND ${PROJECT_BINARY_DIR}/iso/)
-        add_custom_command(OUTPUT ${_iso_asn1_files}
-            COMMAND ${CMAKE_COMMAND} -DDIRECTORY=${PROJECT_BINARY_DIR}/iso -P fetch_iso_asn1_files.cmake
-            COMMENT "Fetch and patch ISO 19091 ASN.1 file"
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            VERBATIM)
-
-        set(_its_asn1_files ${_iso_asn1_files} ${_its_asn1_files} ${_its_asn1_files_depending_on_iso})
-    endif()
-
     set(_pki_asn1_files
         ${PROJECT_SOURCE_DIR}/asn1/TS102941v131-BaseTypes.asn
         ${PROJECT_SOURCE_DIR}/asn1/TS102941v131-MessagesCa.asn
@@ -74,7 +59,7 @@ if(VANETZA_ASN1_WITH_ASN1C)
     add_custom_command(OUTPUT ${_its_asn1_dir}
         DEPENDS ${_sec_asn1_files}
         COMMAND ${CMAKE_COMMAND} -E make_directory ${_its_asn1_dir}
-        COMMAND ${ASN1C_EXECUTABLE} ${_asn1c_flags} -R -D ${_its_asn1_dir} ${_its_asn1_files} ${_sec_asn1_files} test.asn
+        COMMAND ${ASN1C_EXECUTABLE} ${_asn1c_flags} -R -D ${_its_asn1_dir} ${_its_asn1_files} ${_sec_asn1_files} test.asn 
         COMMENT "Generating code from ITS application ASN.1 modules (CDD, CA, DEN)" VERBATIM
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     add_custom_command(OUTPUT "${_its_asn1_source_file}"
@@ -133,6 +118,7 @@ if(VANETZA_ASN1_WITH_ASN1C)
             -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_asn1c_generated.cmake
         COMMENT "Patching generated security asn1c files"
         WORKING_DIRECTORY ${_sec_asn1_dir} VERBATIM)
+<<<<<<< HEAD
     add_custom_command(TARGET generate_asn1c POST_BUILD
         COMMAND ${CMAKE_COMMAND} -DPATCH_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}/patches
             -P ${CMAKE_CURRENT_SOURCE_DIR}/apply_patches.cmake
@@ -145,6 +131,8 @@ if(VANETZA_ASN1_WITH_ASN1C)
                 COMMENT "Applying hot-fixes to generated asn1c ITS ISO files"
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} VERBATIM)
     endif()
+=======
+>>>>>>> 68a12035ff55a34755f130b973ab0f947d6b9e67
 
     # wipe directory with generated files before generating
     add_custom_target(clean_asn1c
@@ -173,9 +161,6 @@ function(add_asn1_component NAME)
     file(STRINGS "${_source_file}" _sources REGEX "^[^#]+")
     if (NOT _sources)
         message(AUTHOR_WARNING "source file ${_source_file} is empty, fix this now!")
-        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/asn1_${NAME}_no_sources.c
-            "#error \"generated ${NAME} ASN.1 source files are missing\"")
-        set(_sources ${CMAKE_CURRENT_BINARY_DIR}/asn1_${NAME}_no_sources.c)
     endif()
     add_vanetza_component(asn1_${NAME} ${_sources})
     set_target_properties(asn1_${NAME} PROPERTIES C_STANDARD 11)
