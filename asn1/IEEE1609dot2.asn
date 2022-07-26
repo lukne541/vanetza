@@ -213,7 +213,7 @@ SequenceOfCertificate ::= SEQUENCE OF Certificate
 CertificateBase ::= SEQUENCE {
     version                 Uint8(3),
     type                    CertificateType,
-    issuer                  IssuerIdentifier,
+    issuer                  IssuerIdentifier1609,
     toBeSigned              ToBeSignedCertificate,
     signature               Signature OPTIONAL
 }
@@ -240,7 +240,7 @@ ExplicitCertificate ::= CertificateBase (WITH COMPONENTS {...,
     signature PRESENT
 })
 
-IssuerIdentifier ::= CHOICE {
+IssuerIdentifier1609 ::= CHOICE {
     sha256AndDigest         HashedId8,
     self                    HashAlgorithm,
     ...,

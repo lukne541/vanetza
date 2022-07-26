@@ -1,0 +1,4 @@
+# How to generate with asn1c:
+mkdir build && cd build
+cmake -DASN1C_SKELETON_DIR=/home/lukas/Programs/asn1c/skeletons/ -DVANETZA_ASN1_WITH_ASN1C=on -DVANETZA_ASN1_WITH_ISO=on ..
+make generate_asn1c
