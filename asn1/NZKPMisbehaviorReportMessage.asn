@@ -36,13 +36,18 @@ Header ::= SEQUENCE {
 Payload ::= SEQUENCE {
    -- misbehaviorReport MisbehaviorReport,
     --authorizationTicket AuthorizationTicket,
-    nzkp NZKP
+    nzkps NZKPS
+  --  sizes SIZES
 }
 
-NZKP ::= SEQUENCE {
-    committedValue OCTET STRING,
-    proof OCTET STRING
-}
+--SIZES ::= SEQUENCE OF INTEGER
+
+NZKPS ::= SEQUENCE OF OCTET STRING
+
+--NZKP ::= SEQUENCE {
+--    committedValue OCTET STRING,
+--    proof OCTET STRING
+--}
 
 --CommittedValues ::= SET OF CommittedValue
 
